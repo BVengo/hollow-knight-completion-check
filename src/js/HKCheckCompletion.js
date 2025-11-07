@@ -1427,7 +1427,7 @@ function CheckAdditionalThings(section, saveFile) {
           const item = list[index];
           const isActivated = item.activated === true;
           const displayName = item.displayName || item.id;
-          const entryName = isActivated ? displayName : `<span class='spoiler-red blurred'>${displayName}</span>`;
+          const entryName = displayName;
           const iconName = item.semiPersistent === true ? (isActivated ? "semiPersistentActive" : "semiPersistentInactive") : (isActivated ? "green" : "red");
 
           interactablesDetailsSection.entries[`interactable${index + 1}`] = {
@@ -2526,9 +2526,8 @@ function ResetCompletion(db) {
       INTERACTABLES.forEach((item, index) => {
         const mapName = TranslateMapName(item.sceneName);
         const displayName = FormatInteractableName(item.id);
-        const blurredName = `<span class='spoiler-red blurred'>${displayName}</span>`;
         sections[section].entries[`interactable${index + 1}`] = {
-          name: blurredName,
+          name: displayName,
           spoiler: mapName,
           icon: "red",
           wiki: ""

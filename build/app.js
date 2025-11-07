@@ -22461,7 +22461,7 @@ function CheckAdditionalThings(section, saveFile) {
             var item = list[index];
             var isActivated = item.activated === true;
             var displayName = item.displayName || item.id;
-            var entryName = isActivated ? displayName : "<span class='spoiler-red blurred'>".concat(displayName, "</span>");
+            var entryName = displayName;
             var iconName = item.semiPersistent === true ? isActivated ? "semiPersistentActive" : "semiPersistentInactive" : isActivated ? "green" : "red";
             interactablesDetailsSection.entries["interactable".concat(index + 1)] = {
               name: entryName,
@@ -23362,9 +23362,8 @@ function ResetCompletion(db) {
       _hk_interactables_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(function (item, index) {
         var mapName = (0,_hk_functions_js__WEBPACK_IMPORTED_MODULE_3__.TranslateMapName)(item.sceneName);
         var displayName = FormatInteractableName(item.id);
-        var blurredName = "<span class='spoiler-red blurred'>".concat(displayName, "</span>");
         sections[section].entries["interactable".concat(index + 1)] = {
-          name: blurredName,
+          name: displayName,
           spoiler: mapName,
           icon: "red",
           wiki: ""
@@ -32168,9 +32167,8 @@ if (interactablesSection) {
       return part.charAt(0).toUpperCase() + part.slice(1);
     }).join(" ");
     var formattedName = displayName || interactable.id;
-    var blurredName = "<span class='spoiler-red blurred'>".concat(formattedName, "</span>");
     interactablesSection.entries[entryKey] = {
-      name: blurredName,
+      name: formattedName,
       id: interactable.id,
       spoiler: mapName,
       sceneName: interactable.sceneName,

@@ -7696,10 +7696,9 @@ if (interactablesSection) {
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(" ");
     const formattedName = displayName || interactable.id;
-    const blurredName = `<span class='spoiler-red blurred'>${formattedName}</span>`;
 
     interactablesSection.entries[entryKey] = {
-      name: blurredName,
+      name: formattedName,
       id: interactable.id,
       spoiler: mapName,
       sceneName: interactable.sceneName,
