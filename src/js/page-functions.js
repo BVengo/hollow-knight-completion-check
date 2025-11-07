@@ -21,6 +21,8 @@ const SYMBOL_TRUE = "<i class='icon-ok-squared'></i>"; // "✅ "
 const SYMBOL_PARTIAL = "<i class='icon-ok-squared partial'></i>"; // "✔ "
 const SYMBOL_CLOCK = "<i class='icon-clock'></i>"; // "🕑 "
 const SYMBOL_FILE = "<i class='icon-doc-text-inv'></i>"; // "📁"
+const SYMBOL_SEMI_ACTIVE = "<i class='icon-arrows-cw semi-active'></i>";
+const SYMBOL_SEMI_INACTIVE = "<i class='icon-arrows-cw semi-inactive'></i>";
 const SYMBOL_BINDING_NAIL = "<i class='reznoricon-binding-nail'></i>"; // Nail Binding
 const SYMBOL_BINDING_SHELL = "<i class='reznoricon-binding-shell'></i>"; // Shell Binding
 const SYMBOL_BINDING_CHARMS = "<i class='reznoricon-binding-charms'></i>"; // Charm Binding
@@ -31,10 +33,28 @@ const SYMBOL_ASCENDED = "<i class='reznoricon-ascended'></i>"; // Ascended
 const SYMBOL_RADIANT = "<i class='reznoricon-radiant'></i>"; // Radiant
 const SYMBOL_EMPTY = "<span class='padding-left'></span>"; // No symbol
 const FLEUR_DIVIDE = "<div class='horizontal-line'></div>";
-const WIKI_LINK = "https://hollowknight.fandom.com/wiki/";
+const WIKI_LINK = "https://hollowknight.wiki/w/";
+
+const COMPLETED_ICONS = new Set([
+  "green",
+  "bindingNail",
+  "bindingShell",
+  "bindingCharms",
+  "bindingSoul",
+  "bindingAll",
+  "attuned",
+  "ascended",
+  "radiant"
+]);
 
 const ROOT = document.documentElement;
 const SCROLL_BUTTON = document.querySelector(".scroll-up-button");
+const SAVE_LOCATION_PATHS = {
+  windows: "%USERPROFILE%\\AppData\\LocalLow\\Team Cherry\\Hollow Knight\\",
+  linux: "~/.config/unity3d/Team Cherry/Hollow Knight/",
+  mac: "~/Library/Application Support/unity.Team Cherry.Hollow Knight/"
+};
+const DEFAULT_SAVE_PATH_OS = "windows";
 
 /* -------------------------- Variables --------------------------------------------------------------------------------------- */
 
@@ -122,8 +142,40 @@ function TogglePageScrollElement(root, element, ratio) {
   }
 }
 
+function DetectClientOS() {
+
+  let navigatorObject = window.navigator || {};
+  let uaDataPlatform = navigatorObject.userAgentData && navigatorObject.userAgentData.platform ? navigatorObject.userAgentData.platform : "";
+  let combinedString = `${uaDataPlatform} ${navigatorObject.platform || ""} ${navigatorObject.userAgent || ""}`.toLowerCase();
+
+  if (combinedString.includes("win")) return "windows";
+  if (combinedString.includes("mac") || combinedString.includes("darwin") || combinedString.includes("iphone") || combinedString.includes("ipad")) return "mac";
+  if (combinedString.includes("linux") || combinedString.includes("x11") || combinedString.includes("ubuntu") || combinedString.includes("android")) return "linux";
+
+  return DEFAULT_SAVE_PATH_OS;
+}
+
+function SetDetectedSaveLocationPath() {
+
+  let saveLocationInput = document.getElementById("save-location-input");
+  if (!saveLocationInput) return;
+
+  let osKey = DetectClientOS();
+  let savePath = SAVE_LOCATION_PATHS[osKey] || SAVE_LOCATION_PATHS[DEFAULT_SAVE_PATH_OS];
+
+  saveLocationInput.value = savePath;
+  saveLocationInput.setAttribute("data-os-path", osKey);
+}
+
 
 /* ################################### Optimized Functions ########################################################################## */
+
+function ApplyCompletedClass(markup, entry) {
+  if (!markup || !entry || !entry.hasOwnProperty("icon")) return markup;
+  if (!COMPLETED_ICONS.has(entry.icon)) return markup;
+  if (markup.includes(" completed-entry")) return markup;
+  return markup.replace("'>", " completed-entry'>");
+}
 
 
 function GenerateInnerHTML(db) {
@@ -410,6 +462,7 @@ function GenerateInnerHTML(db) {
             default:
           }
 
+          obj.div = ApplyCompletedClass(obj.div, entries[entry]);
           textFill += SingleEntryFill(obj);
         }
 
@@ -452,7 +505,6 @@ function GenerateInnerHTML(db) {
           obj.div = div;
           obj.textPrefix = entries[entry].name;
           obj.textSuffix = `— ${entries[entry].spoiler}`;
-          obj.wiki = entries[entry].wiki;
 
           /* -------- Icons (next to each entry) --------- */
           if (entries[entry].hasOwnProperty("icon")) {
@@ -468,6 +520,15 @@ function GenerateInnerHTML(db) {
 
                 /* -------- Prevents hiding as spoiler when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
+                break;
+
+              case "semiPersistentActive":
+                obj.icon = SYMBOL_SEMI_ACTIVE;
+                obj.span[0] = "<span class='spoiler-span-green'>";
+                break;
+
+              case "semiPersistentInactive":
+                obj.icon = SYMBOL_SEMI_INACTIVE;
                 break;
 
               case "partial":
@@ -493,56 +554,56 @@ function GenerateInnerHTML(db) {
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-  
+
               case "bindingShell":
                 obj.icon = SYMBOL_BINDING_SHELL;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-  
+
               case "bindingCharms":
                 obj.icon = SYMBOL_BINDING_CHARMS;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-  
+
               case "bindingSoul":
                 obj.icon = SYMBOL_BINDING_SOUL;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-              
+
               case "bindingAll":
                 obj.icon = SYMBOL_BINDING_ALL;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-              
+
               case "attuned":
                 obj.icon = SYMBOL_ATTUNED;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-              
+
               case "ascended":
                 obj.icon = SYMBOL_ASCENDED;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-              
+
               case "radiant":
                 obj.icon = SYMBOL_RADIANT;
 
                 /* -------- Prevents blurring when a player has already completed the entry --------- */
                 obj.span[0] = "<span class='spoiler-span-green'>";
                 break;
-              
+
               case "red":
                 obj.icon = SYMBOL_FALSE;
                 break;
@@ -560,6 +621,7 @@ function GenerateInnerHTML(db) {
 
               case "red":
               case "none":
+              case "semiPersistentInactive":
                 obj.iconClass = " spoiler-red blurred";
                 break;
 
@@ -571,7 +633,11 @@ function GenerateInnerHTML(db) {
             obj.iconClass = "";
           }
 
-          obj.b = [`<a class="wiki${obj.iconClass}" href="${WIKI_LINK}${obj.wiki}" target="_blank">`, "</a>"];
+          if (entries[entry].hasOwnProperty("wiki") && entries[entry].wiki) {
+            obj.b = [`<a class="wiki${obj.iconClass}" href="${WIKI_LINK}${entries[entry].wiki}" target="_blank">`, "</a>"];
+          } else {
+            obj.b = ["", ""];
+          }
 
           if (entries[entry].hasOwnProperty("amount")) {
             if (entries[entry].hasOwnProperty("disabled")) {
@@ -610,6 +676,7 @@ function GenerateInnerHTML(db) {
           if (obj.textPrefix.includes("<del>")) obj.textSuffix = `<del>${obj.textSuffix}</del>`;
 
           /* textFill += SingleEntryFill(section, entries[entry]); */
+          obj.div = ApplyCompletedClass(obj.div, entries[entry]);
           textFill += SingleEntryFill(obj);
 
         } /* end for (let entry in entries) */
@@ -630,7 +697,7 @@ function GenerateInnerHTML(db) {
       case "items": // Collectibles
       case "geoRocks": // Geo Caches
       case "corniferNotes": // Secrets
-      case "statistics": // Statistics
+      case "statisticsInteractables": // Statistics
       case "hallOfGods": // Godmaster
 
         finalHTMLFill += `</div>`;
@@ -896,7 +963,7 @@ function SingleEntryFill(obj) {
     obj.span[0],
     obj.p,
     obj.spoiler[0],
-    `${obj.textSuffix}${obj.spoilerAfter}`,
+    obj.textSuffix,
     obj.spoiler[1],
     obj.span[1],
     "</div>\n"
@@ -1082,6 +1149,53 @@ function CheckboxSpoilersToggle(param = "none") {
 }
 
 /**
+ * Toggles visibility of entries marked as completed.
+ * @param {string} param "hide", "show" or none (optional)
+ */
+function CheckboxHideCompletedToggle(param = "none") {
+
+  let checkboxId = document.getElementById("checkbox-hide-completed");
+  let targetClassList = document.body.classList;
+
+  const hideCompleted = () => {
+    targetClassList.add("hide-completed");
+    checkboxId.value = "completed-hidden";
+
+    if (StorageAvailable('localStorage')) {
+      localStorage.setItem("hkCheckboxHideCompleted", "checked");
+    }
+  };
+
+  const showCompleted = () => {
+    targetClassList.remove("hide-completed");
+    checkboxId.value = "completed-visible";
+
+    if (StorageAvailable('localStorage')) {
+      localStorage.setItem("hkCheckboxHideCompleted", "unchecked");
+    }
+  };
+
+  switch (param) {
+    case "hide":
+      checkboxId.checked = true;
+      hideCompleted();
+      break;
+
+    case "show":
+      checkboxId.checked = false;
+      showCompleted();
+      break;
+
+    default:
+      if (checkboxId.checked === true) {
+        hideCompleted();
+      } else {
+        showCompleted();
+      }
+  }
+}
+
+/**
  * Hides all other tabs, except the one which button was clicked (shows only the chosen tab)
  * @param {String} clickedButton The click target (button clicked)
  */
@@ -1241,6 +1355,8 @@ function FileDateFormat(file) {
 
 /* ========================== Event Listeners ========================== */
 
+SetDetectedSaveLocationPath();
+
 /* --------------- Toggle visibility of scroll arrow ------------------ */
 
 document.addEventListener("scroll", () => {
@@ -1296,6 +1412,7 @@ document.getElementById("toggle-mode").addEventListener("click", ToggleSaveModeS
 
 document.getElementById("checkbox-hints").addEventListener("click", CheckboxHintsToggle, false);
 document.getElementById("checkbox-spoilers").addEventListener("click", CheckboxSpoilersToggle, false);
+document.getElementById("checkbox-hide-completed").addEventListener("click", CheckboxHideCompletedToggle, false);
 
 /* ------------ Drag & drop file to the window -------------- */
 
@@ -1372,6 +1489,7 @@ export {
   AppendHTML,
   CheckboxHintsToggle,
   CheckboxSpoilersToggle,
+  CheckboxHideCompletedToggle,
   StorageAvailable,
   Benchmark,
   benchmarkTimes

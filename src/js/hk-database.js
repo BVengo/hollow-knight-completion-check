@@ -1,3 +1,6 @@
+import { TranslateMapName } from "./hk-functions.js";
+import INTERACTABLES from "./hk-interactables.js";
+
 // ---------------- Hollow Knight Data Constant Objects ----------------- //
 /*
     This is the whole database for the tool, based on the .json save file data
@@ -131,7 +134,7 @@ const HK = {
         hasDreamNail: {
           spoiler: "A weapon from a dream world can only be found, where the souls can peacefully rest."
         },
-        /* 
+        /*
         Either:
         - used the elevator in Resting Grounds to City of Tears
         - opened the Fungal Wastes city gate
@@ -429,7 +432,7 @@ const HK = {
           name: "#31 Dashmaster",
           spoiler: "Fungal Wastes, below bench, near Bretta",
           wiki: "Dashmaster"
-          /* 
+          /*
           "id": "Shiny Item Stand",
           "sceneName": "Fungus2_23",
           */
@@ -793,7 +796,7 @@ const HK = {
         },
         vesselFragmentDeepnest: {
           name: "Vessel Fragment #8",
-          spoiler: "Deepnest: Goam platforming challenge",
+          spoiler: "Deepnest: Garpede platforming challenge",
           wiki: "Vessel_Fragment",
           id: "Vessel Fragment",
           sceneName: "Deepnest_38"
@@ -1669,7 +1672,7 @@ const HK = {
           spoiler: "Godhome: Pantheon of Hallownest",
           wiki: "Pantheon_of_Hallownest"
         },
-        /* 
+        /*
           Mr Mushroom data
           case SplitName.MrMushroom1: shouldSplit = mem.PlayerData<int>(Offset.mrMushroomState) == 2; break;
           case SplitName.MrMushroom2: shouldSplit = mem.PlayerData<int>(Offset.mrMushroomState) == 3; break;
@@ -1678,9 +1681,9 @@ const HK = {
           case SplitName.MrMushroom5: shouldSplit = mem.PlayerData<int>(Offset.mrMushroomState) == 6; break;
           case SplitName.MrMushroom6: shouldSplit = mem.PlayerData<int>(Offset.mrMushroomState) == 7; break;
           case SplitName.MrMushroom7: shouldSplit = mem.PlayerData<int>(Offset.mrMushroomState) == 8; break;
-  
+
           "mrMushroomState": 4, < this is the current location of Mr Mushroom (Howling Cliffs)
-  
+
           1. Spawn of self, their minds unite, (Fungal Wastes)
           2. Aside the source of acid blight, (Kingdom's Edge, near Isma's Grove)
           3. Aglow in darkest, winding depths, (Deepnest, near Galien)
@@ -1730,7 +1733,7 @@ const HK = {
           spoiler: "Forgotten Crossroads: Black Egg Temple",
           wiki: "Hollow_Knight"
         },
-        /* 
+        /*
         Absolute Radiance (for P5, achievements)
         Sisters of Battle (for P5, achievements)
         Winged Nosk (for P5, achievements)
@@ -3554,21 +3557,21 @@ const HK = {
           id: "Shiny Item",
           sceneName: "Cliffs_01",
           wiki: "King%27s_Idol"
-        }, 
+        },
         kingsIdol2: {
           name: "King's Idol #2",
           spoiler: "Crystal Peak: Cornifer Room, use Monarch Wings",
           id: "Shiny Item Stand",
           sceneName: "Mines_30",
           wiki: "King%27s_Idol"
-        }, 
+        },
         kingsIdol3: {
           name: "King's Idol #3",
           spoiler: "Resting Grounds: Spirit's Glade, Waterfall",
           id: "Shiny Item",
           sceneName: "RestingGrounds_08",
           wiki: "King%27s_Idol"
-        }, 
+        },
         kingsIdol4: {
           name: "King's Idol #4",
           spoiler: "Royal Waterways: Dung Defender's Cave",
@@ -5907,7 +5910,7 @@ const HK = {
           sceneName: "White_Palace_09",
           wiki: "White_Palace#Throne_room_Lore_Tablet"
         },
-        /* 
+        /*
         #52 Quake Floor 🗺️ Palace Caged Lever ⌨️ White_Palace_15
         #53 Breakable Wall Waterways 🗺️ Palace Spike Drop ⌨️ White_Palace_12
         #54 Break Floor 1 🗺️ Palace Spike Drop ⌨️ White_Palace_12
@@ -6010,7 +6013,7 @@ const HK = {
           maxDefault: 164,
           wiki: "Category:Enemies_(Hollow_Knight)#Compendium"
         },
-        /* 
+        /*
         Add 4 remaining to Hunter Notes max
         */
         journalNotesCompleted: {
@@ -6118,6 +6121,13 @@ const HK = {
           wiki: "Grey_Prince_Zote"
         }
       },
+    },
+
+    statisticsInteractables: {
+      h2: "Game Statistics – Interactables",
+      id: "hk-statistics-interactables",
+      description: "Tracked interactables: 1205. Activated: 0. Remaining: 1205.",
+      entries: {},  // Added at the end
     },
 
     /* ################################################# Godhome Statistics ############################################## */
@@ -7667,9 +7677,36 @@ const HK = {
         },
       },
     }
-
-
   },
 };
+
+const interactablesSection = HK.sections.statisticsInteractables;
+
+if (interactablesSection) {
+  const totalTracked = INTERACTABLES.length;
+  interactablesSection.description = `Tracked interactables: ${totalTracked}. Activated: 0. Remaining: ${totalTracked}.`;
+
+  INTERACTABLES.forEach((interactable, index) => {
+    const mapName = TranslateMapName(interactable.sceneName);
+    const entryKey = `interactable${index + 1}`;
+    const displayName = interactable.id
+      .replace(/_/g, " ")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+    const formattedName = displayName || interactable.id;
+    const blurredName = `<span class='spoiler-red blurred'>${formattedName}</span>`;
+
+    interactablesSection.entries[entryKey] = {
+      name: blurredName,
+      id: interactable.id,
+      spoiler: mapName,
+      sceneName: interactable.sceneName,
+      icon: "red",
+      wiki: "",
+    };
+  });
+}
 
 export default HK;

@@ -2,203 +2,219 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link href="favicon.png" rel="icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="favicon.png" rel="icon">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Heebo:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
 
-  <title>Save Completion Analyzer for Hollow Knight Online</title>
+    <title>Save Completion Analyzer for Hollow Knight Online</title>
 
-  <meta name="description"
-    content="A simple open source tool for checking every single thing you missed for your Game Completion Percentage.">
+    <meta name="description"
+        content="A simple open source tool for checking every single thing you missed for your Game Completion Percentage.">
 
-  <meta name="keywords"
-    content="hollow knight, tool, online, save, game, completion, check, checker, percentage, percent, left, analyze, analyzer, file">
+    <meta name="keywords"
+        content="hollow knight, tool, online, save, game, completion, check, checker, percentage, percent, left, analyze, analyzer, file">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Save Completion Analyzer for Hollow Knight Online">
-  <meta property="og:description"
-    content="A simple open source tool for checking what you missed for your Game Completion Percentage.">
-  <meta property="og:image"
-    content="https://reznormichael.github.io/hollow-knight-completion-check/img/thumbnail1200x628.jpg">
-  <meta property="og:url" content="https://reznormichael.github.io/hollow-knight-completion-check/">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Save Completion Analyzer for Hollow Knight Online">
+    <meta property="og:description"
+        content="A simple open source tool for checking what you missed for your Game Completion Percentage.">
+    <meta property="og:image"
+        content="https://bvengo.github.io/hollow-knight-completion-check/img/thumbnail1200x628.jpg">
+    <meta property="og:url" content="https://bvengo.github.io/hollow-knight-completion-check/">
 
-  <!-- Twitter -->
-  <meta property="twitter:title" content="Save Completion Analyzer for Hollow Knight Online">
-  <meta property="twitter:description"
-    content="A simple open source tool for checking what you missed for your Game Completion Percentage.">
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:image"
-    content="https://reznormichael.github.io/hollow-knight-completion-check/img/thumbnail1200x628.jpg">
-  <meta property="twitter:url" content="https://reznormichael.github.io/hollow-knight-completion-check/">
+    <!-- Twitter -->
+    <meta property="twitter:title" content="Save Completion Analyzer for Hollow Knight Online">
+    <meta property="twitter:description"
+        content="A simple open source tool for checking what you missed for your Game Completion Percentage.">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image"
+        content="https://bvengo.github.io/hollow-knight-completion-check/img/thumbnail1200x628.jpg">
+    <meta property="twitter:url" content="https://bvengo.github.io/hollow-knight-completion-check/">
 
-  <meta name="author" content="ReznoR Michael">
+    <meta name="author" content="ReznoR Michael">
 </head>
 
 <body>
 
-  <button class="scroll-up-button hidden">
-    <div class="scroll-up-button-arrow"></div>
-  </button>
+    <button class="scroll-up-button hidden">
+        <div class="scroll-up-button-arrow"></div>
+    </button>
 
-  <div id="background"></div>
+    <div id="background"></div>
 
-  <div id="content">
+    <div id="content">
 
-    <h1 id="h1-title">Save Completion Analyzer</h1>
-    <div id="sub-title">for Hollow Knight</div>
+        <h1 id="h1-title">Save Completion Analyzer</h1>
+        <div id="sub-title">for Hollow Knight</div>
 
-    <p class="smalltext">
-      <a class="link-social" href="https://www.paypal.me/ReznoRMichael" target="_blank"><i
-          class="simpleicon-paypal"></i>Support Analyzer and get Featured!<i class="simpleicon-paypal"></i></a>
-      <br>
-      <a class="link-social" href="https://steamcommunity.com/sharedfiles/filedetails/?id=2209910193" target="_blank"><i
-          class="simpleicon-steam"></i>Official Steam Guide</a>
-      <a class="link-social" href="https://www.instagram.com/reznor.technology/" target="_blank"><i
-          class="simpleicon-instagram"></i>Instagram</a>
-      <a class="link-social" href="https://www.youtube.com/c/MichaelReznoR" target="_blank"><i
-          class="simpleicon-youtube"></i>Youtube</a>
-      <a class="link-social" href="https://twitter.com/intent/follow?screen_name=ReznoRMichael" target="_blank"><i
-          class="simpleicon-twitter"></i>Twitter</a>
-      <a class="link-social" href="https://github.com/ReznoRMichael/hollow-knight-completion-check" target="_blank"><i
-          class="simpleicon-github"></i>GitHub</a>
-      <br>
-      <!-- <a href="https://pastebin.com/raw/shfZ4Vqs" target="_blank">[ Decoded 5% Save Example ]</a><br> -->
+        <h2 id="h2">Links</h2>
+        <div class="smalltext">
+            <a class="link-social" href="https://github.com/bvengo/hollow-knight-completion-check" target="_blank"><i
+                    class="simpleicon-github"></i>GitHub</a>
 
-      <div class="tooltip">
-        <input type="text" id="save-location-input" value="%USERPROFILE%\AppData\LocalLow\Team Cherry\Hollow Knight\"
-          readonly>
-        <!-- <textarea id="save-location-input" value="%USERPROFILE%\AppData\LocalLow\Team Cherry\Hollow Knight\" readonly></textarea> -->
-        <span class="tooltip-text" id="save-location-input-tooltip">Click once to copy to clipboard</span>
-      </div>
+            <div class="links-divider" aria-hidden="true"></div>
 
-      <p class="smalltext">
-        Choose a <strong>user*.dat</strong> save <em>or</em> paste text from <a href="https://bloodorca.github.io/hollow/" target="_blank">Save
-          Editor</a> | <a href="https://pastebin.com/raw/xp1Gi7nG" target="_blank">Testing Save</a>
-      </p>
-    </p>
-
-    <div>
-
-      <div class="buttons centered">
-
-        <div class="input-buttons">
-          <input id="toggle-mode" class="input-button" type="button" value="modeFile">
-          <label for="toggle-mode" id="toggle-mode-label" class="button button-square" title="Switch Mode: Text or File."><i class="icon-arrows-cw"></i></label>
-          <!-- <input id="save-area-file" class="" type="file" name="file" accept=".dat,.bak*" onchange="LoadSaveFile(this);" onclick="this.value = '';"> -->
-          <input id="save-area-file" class="input-file" type="file" name="file" accept=".dat,.bak*">
-          <label for="save-area-file" id="file-input-label" class="button button-large" title="Navigate to Hollow Knight's Save File Location and select a user*.dat File."><i class="icon-doc-text-inv"></i>Choose Save File...</label>
-          
-          <button id="save-area-read" class="button button-large hidden" type="button" title="Press this button after pasting your Save Text from the Save Editor into the text box below.">Analyze Save Text</button>
-
-          <a class="button button-square" href="https://store.steampowered.com/account/remotestorageapp/?appid=367520"
-            target="_blank" title="Download a Save File from your Steam Cloud Storage for Hollow Knight."><i class="icon-download-cloud"></i></a>
+            <!-- Original author links -->
+            <p class="smalltext link-section-title">Original Author</p>
+            <a class="link-social" href="https://www.paypal.me/ReznoRMichael" target="_blank"><i
+                    class="simpleicon-paypal"></i>Paypal</a>
+            <a class="link-social" href="https://github.com/ReznoRMichael/hollow-knight-completion-check" target="_blank"><i
+                    class="simpleicon-github"></i>GitHub</a>
+            <a class="link-social" href="https://steamcommunity.com/sharedfiles/filedetails/?id=2209910193"
+                target="_blank"><i class="simpleicon-steam"></i>Official Steam Guide</a>
+            </br>
+            <a class="link-social" href="https://www.instagram.com/reznor.technology/" target="_blank"><i
+                    class="simpleicon-instagram"></i>Instagram</a>
+            <a class="link-social" href="https://www.youtube.com/c/MichaelReznoR" target="_blank"><i
+                    class="simpleicon-youtube"></i>Youtube</a>
+            <a class="link-social" href="https://twitter.com/intent/follow?screen_name=ReznoRMichael" target="_blank"><i
+                    class="simpleicon-twitter"></i>Twitter</a>
         </div>
 
-        <!-- <div class="input-buttons">
-          <a class="button" href="https://store.steampowered.com/account/remotestorageapp/?appid=367520"
-            target="_blank">Steam Cloud Saves<i class="icon-download-cloud"></i></a>
-        </div> -->
+        <!-- <a href="https://pastebin.com/raw/shfZ4Vqs" target="_blank">[ Decoded 5% Save Example ]</a><br> -->
 
-      </div>
-
-      <textarea id="save-area" name="save-area" class="hidden" rows="6" spellcheck="false"
-        placeholder="Paste your decoded save text from Save Editor here (Ctrl&nbsp;+&nbsp;V)"
-        autofocus></textarea>
-
-      <div class="buttons">
-
-        <!-- <div class="input-buttons"> -->
-          <!-- <button id="save-area-file" class="button" onclick="">Load Save</button> -->
-          <!-- <input id="save-area-file" class="" type="file" name="file" accept=".dat,.bak*" onchange="LoadSaveFile(this)"> -->
-          <!-- <button id="save-area-read" class="button" onclick="HKReadTextArea('save-area');">Analyze Text</button> -->
-          <!-- <button id="save-area-read" class="button" type="button">Analyze Text</button> -->
-        <!-- </div> -->
-
-        <div class="checkboxes">
-
-          <input type="checkbox" name="checkboxes" id="checkbox-hints" value="hints-off">
-          <label for="checkbox-hints" class="checkbox-label"
-            title="Check to see an optional clue for your first playthrough based on your save's progress.">
-            <!-- <input type="checkbox" name="checkboxes" id="checkbox-hints" value="hints-off" onclick="CheckboxHintsToggle();"> -->
-            <span class="checkmark"></span><strong>Hints</strong>
-          </label>
-
-          <input type="checkbox" name="checkboxes" id="checkbox-spoilers" value="spoilers-off">
-          <label for="checkbox-spoilers" class="checkbox-label"
-            title="Check to show everything. By default only completed things are fully revealed.">
-            <!-- <input type="checkbox" name="checkboxes" id="checkbox-spoilers" value="spoilers-off" onclick="CheckboxSpoilersToggle();"> -->
-            <span class="checkmark"></span><strong>Spoilers</strong>
-          </label>
-          
+        <h2 id="h2">Configs</h2>
+        <div class="tooltip">
+            <input type="text" id="save-location-input"
+                value="%USERPROFILE%\AppData\LocalLow\Team Cherry\Hollow Knight\" readonly>
+            <!-- <textarea id="save-location-input" value="%USERPROFILE%\AppData\LocalLow\Team Cherry\Hollow Knight\" readonly></textarea> -->
+            <span class="tooltip-text" id="save-location-input-tooltip">Click once to copy to clipboard</span>
         </div>
 
-      </div>
+        <p class="smalltext">
+            Choose a <strong>user*.dat</strong> save <em>or</em> paste text from <a
+                href="https://bloodorca.github.io/hollow/" target="_blank">Save
+                Editor</a> | <a href="https://pastebin.com/raw/xp1Gi7nG" target="_blank">Testing Save</a>
+        </p>
+        </p>
 
-    </div>
+        <div>
+
+            <div class="buttons centered">
+
+                <div class="input-buttons">
+                    <input id="toggle-mode" class="input-button" type="button" value="modeFile">
+                    <label for="toggle-mode" id="toggle-mode-label" class="button button-square"
+                        title="Switch Mode: Text or File."><i class="icon-arrows-cw"></i></label>
+                    <!-- <input id="save-area-file" class="" type="file" name="file" accept=".dat,.bak*" onchange="LoadSaveFile(this);" onclick="this.value = '';"> -->
+                    <input id="save-area-file" class="input-file" type="file" name="file" accept=".dat,.bak*">
+                    <label for="save-area-file" id="file-input-label" class="button button-large"
+                        title="Navigate to Hollow Knight's Save File Location and select a user*.dat File."><i
+                            class="icon-doc-text-inv"></i>Choose Save File...</label>
+
+                    <button id="save-area-read" class="button button-large hidden" type="button"
+                        title="Press this button after pasting your Save Text from the Save Editor into the text box below.">Analyze
+                        Save Text</button>
+
+                    <a class="button button-square"
+                        href="https://store.steampowered.com/account/remotestorageapp/?appid=367520" target="_blank"
+                        title="Download a Save File from your Steam Cloud Storage for Hollow Knight."><i
+                            class="icon-download-cloud"></i></a>
+                </div>
+            </div>
+
+            <textarea id="save-area" name="save-area" class="hidden" rows="6" spellcheck="false"
+                placeholder="Paste your decoded save text from Save Editor here (Ctrl&nbsp;+&nbsp;V)"
+                autofocus></textarea>
+
+            <div class="buttons">
+
+                <!-- <div class="input-buttons"> -->
+                <!-- <button id="save-area-file" class="button" onclick="">Load Save</button> -->
+                <!-- <input id="save-area-file" class="" type="file" name="file" accept=".dat,.bak*" onchange="LoadSaveFile(this)"> -->
+                <!-- <button id="save-area-read" class="button" onclick="HKReadTextArea('save-area');">Analyze Text</button> -->
+                <!-- <button id="save-area-read" class="button" type="button">Analyze Text</button> -->
+                <!-- </div> -->
+
+                <div class="checkboxes">
+
+                    <input type="checkbox" name="checkboxes" id="checkbox-hints" value="hints-off">
+                    <label for="checkbox-hints" class="checkbox-label"
+                        title="Check to see an optional clue for your first playthrough based on your save's progress.">
+                        <!-- <input type="checkbox" name="checkboxes" id="checkbox-hints" value="hints-off" onclick="CheckboxHintsToggle();"> -->
+                        <span class="checkmark"></span><strong>Hints</strong>
+                    </label>
+
+                    <input type="checkbox" name="checkboxes" id="checkbox-spoilers" value="spoilers-off">
+                    <label for="checkbox-spoilers" class="checkbox-label"
+                        title="Check to show everything. By default only completed things are fully revealed.">
+                        <!-- <input type="checkbox" name="checkboxes" id="checkbox-spoilers" value="spoilers-off" onclick="CheckboxSpoilersToggle();"> -->
+                        <span class="checkmark"></span><strong>Spoilers</strong>
+                    </label>
+
+                    <input type="checkbox" name="checkboxes" id="checkbox-hide-completed" value="completed-visible">
+                    <label for="checkbox-hide-completed" class="checkbox-label"
+                        title="Check to hide entries that are already completed.">
+                        <span class="checkmark"></span><strong>Hide Completed</strong>
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
 
 
 
-    <div style="margin-bottom: 20px;"></div>
+        <div style="margin-bottom: 20px;"></div>
 
-    <!-- ========== Main Generated Content =========== -->
-    <div id="generated"></div>
+        <!-- ========== Main Generated Content =========== -->
+        <div id="generated"></div>
 
-    <div style="margin-bottom: 20px;"></div>
+        <div style="margin-bottom: 20px;"></div>
 
-    <h6>Secrets!</h6>
+        <div class="hall-of-fame-border">
 
-    <p class="smalltext">
-      Did you know? You can press <strong>Ctrl + Shift + I</strong> and choose the <strong>Console Tab</strong> to view some extra secret
-      data not currently shown in the tool. (after loading any save file)
-    </p>
+            <h6 class="hall-of-fame">Analyzer Supporters</h6>
+            <p class="smalltext">
+                These awesome people have supported the development of this Analyzer by donating via PayPal.
+                Lvl indicates the amount of their support.
+            </p>
 
-    <div style="margin-bottom: 20px;"></div>
+            <p class="smalltext">
+                <b class="pp-gold">Klaudia</b>&nbsp;(Lvl&nbsp;45) -
+                <b class="pp-silver">Rohit</b>&nbsp;(Lvl&nbsp;7) -
+                <b class="pp-silver">Dominic</b>&nbsp;(Lvl&nbsp;6) -
+                <b class="pp-silver">David</b>&nbsp;(Lvl&nbsp;5) -
+                <b class="pp-silver">Peter</b>&nbsp;(Lvl&nbsp;5) -
+                <b class="pp-silver">Ruben</b>&nbsp;(Lvl&nbsp;5) -
+                <b class="pp-bronze">AnonymousCanada</b>&nbsp;(Lvl&nbsp;3) -
+                <b class="pp-bronze">Mozzie</b>&nbsp;(Lvl&nbsp;2)
+            </p>
 
-    <div class="hall-of-fame-border">
+            <p class="smalltext">
+                This list is no longer updated, however you can still
+                <a href="https://www.paypal.me/ReznoRMichael" target="_blank">
+                    <i class="simpleicon-paypal"></i>Donate<i class="simpleicon-paypal"></i>
+                </a>
+                to the original author to maintain their resting place.
+            </p>
 
-      <h6 class="hall-of-fame">Analyzer Supporters</h6>
+        </div>
 
-      <p class="smalltext">
-        <b class="pp-gold">Klaudia</b>&nbsp;(Lvl&nbsp;45) - 
-        <b class="pp-silver">Rohit</b>&nbsp;(Lvl&nbsp;7) - 
-        <b class="pp-silver">Dominic</b>&nbsp;(Lvl&nbsp;6) - 
-        <b class="pp-silver">David</b>&nbsp;(Lvl&nbsp;5) - 
-        <b class="pp-silver">Peter</b>&nbsp;(Lvl&nbsp;5) - 
-        <b class="pp-silver">Ruben</b>&nbsp;(Lvl&nbsp;5) - 
-        <b class="pp-bronze">AnonymousCanada</b>&nbsp;(Lvl&nbsp;3) - 
-        <b class="pp-bronze">Mozzie</b>&nbsp;(Lvl&nbsp;2)
-      </p>
+        <div style="margin-bottom: 20px;"></div>
 
-      <p class="smalltext">
-        You too can get immortalized here. <a href="https://www.paypal.me/ReznoRMichael" target="_blank"><i
-            class="simpleicon-paypal"></i>Donate<i
-            class="simpleicon-paypal"></i></a> at least $1 for the Analyzer!<br>
-        Lvl indicates your amount of support.
-      </p>
+        <p class="smalltext">
+            v2.2.2. Work-In-Progress. Ideas &amp; Bug Reports: <a
+                href="https://github.com/bvengo/hollow-knight-completion-check/issues" target="_blank"><i
+                    class="simpleicon-github"></i>GitHub</a>.<br>
+            Programmed, written and created by 🉑 <a
+                href="https://github.com/ReznoRMichael/hollow-knight-completion-check" target="_blank">rezno[R]</a>
+            &copy; 2020–2022<br>
+            Presently maintained by <a href="https://github.com/bvengo/hollow-knight-completion-check"
+                target="_blank">BVengo</a><br>
+            <a href="https://store.steampowered.com/app/367520/Hollow_Knight/" target="_blank">Hollow Knight</a> by <a
+                href="https://teamcherry.com.au/" target="_blank">Team Cherry</a> &copy; 2017–2022<br>
+        </p>
 
-    </div>
-
-    <div style="margin-bottom: 20px;"></div>
-
-    <p class="smalltext">
-      v2.2.0. Work-In-Progress. Ideas &amp; Bug Reports: <a
-        href="https://steamcommunity.com/app/367520/discussions/0/2915472677711090083/" target="_blank"><i
-          class="simpleicon-steam"></i>Steam Discussions</a> <a
-        href="https://steamcommunity.com/sharedfiles/filedetails/?id=2209910193" target="_blank"><i
-          class="simpleicon-steam"></i>Steam Guide</a>.<br>
-      Programmed, written and created by 🉑 <a href="https://github.com/ReznoRMichael/hollow-knight-completion-check"
-        target="_blank">rezno[R]</a> &copy; 2020–2022<br>
-      <a href="https://store.steampowered.com/app/367520/Hollow_Knight/" target="_blank">Hollow Knight</a> by <a
-        href="https://teamcherry.com.au/" target="_blank">Team Cherry</a> &copy; 2017–2022<br>
-    </p>
-
-  </div> <!-- end content -->
+    </div> <!-- end content -->
 
 </body>
 

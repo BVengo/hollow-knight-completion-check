@@ -265,11 +265,6 @@ textarea::placeholder {
   caret-color: #fff;
 }
 
-input[type="file"] {
-  /* max-width: 500px; */
-  /* margin: 0.5rem 0.5rem 0.5rem 0.25rem; */
-}
-
 .input-file,
 .input-button {
   width: 0.1px;
@@ -546,6 +541,22 @@ a.wiki {
   margin: 0.25rem;
 }
 
+.links-divider {
+  width: 100%;
+  max-width: 16rem;
+  height: 1px;
+  margin: 0.75rem auto 0.5rem;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.link-section-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  color: #d9f3ff;
+}
+
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   margin-right: 0.275em;
@@ -557,6 +568,14 @@ a.wiki {
 
 .icon-ok-squared {
   color: #16c60c;
+}
+
+.semi-active {
+  color: #f59e0b;
+}
+
+.semi-inactive {
+  color: rgba(245, 158, 11, 0.38);
 }
 
 .partial {
@@ -663,6 +682,10 @@ a.wiki {
 }
 
 .hidden {
+  display: none;
+}
+
+.hide-completed .completed-entry {
   display: none;
 }
 

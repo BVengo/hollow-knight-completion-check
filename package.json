@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ReznoRMichael/hollow-knight-completion-check.git"
+    "url": "git+https://github.com/BVengo/hollow-knight-completion-check.git"
   },
   "keywords": [
     "hollow",
@@ -27,11 +27,14 @@
     "tool"
   ],
   "author": "Michael ReznoR",
+  "maintainers": [
+    { "name": "BVengo" }
+  ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/ReznoRMichael/hollow-knight-completion-check/issues"
+    "url": "https://github.com/BVengo/hollow-knight-completion-check/issues"
   },
-  "homepage": "https://github.com/ReznoRMichael/hollow-knight-completion-check#readme",
+  "homepage": "https://github.com/BVengo/hollow-knight-completion-check#readme",
   "dependencies": {
     "core-js": "^3.18.3"
   },

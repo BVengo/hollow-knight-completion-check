@@ -3,6 +3,7 @@
 /* ---------------- Load main Hollow Knight database files ------------------------------------------------------------------------ */
 
 import HK from "./hk-database.js";
+import INTERACTABLES from "./hk-interactables.js";
 
 /* ----------------- Helper functions --------------------------------------------------------------------------------------------- */
 
@@ -11,6 +12,7 @@ import {
   AppendHTML,
   CheckboxHintsToggle,
   CheckboxSpoilersToggle,
+  CheckboxHideCompletedToggle,
   StorageAvailable,
   Benchmark,
   benchmarkTimes
@@ -341,6 +343,7 @@ function HKCheckCompletion(jsonObject, benchStart = performance.now()) {
   // Prevents wrong checkbox behaviour (must run after everything is finished)
   CheckboxHintsToggle();
   CheckboxSpoilersToggle();
+  CheckboxHideCompletedToggle();
 
   /* focus the text area after analyzing the save, without scrolling the document (too slow) */
   /* document.getElementById("save-area").focus({preventScroll: true}); */
@@ -1031,6 +1034,16 @@ function CheckIfDataTrue(section, dataObject, playerData, worldData = []) {
           SetIconRed(section, i);
         }
         break;
+      case "bankerSpaMet": {
+        // Work around in-game bug by inferring meetup from post-theft state
+        // Thanks to samjwill for their in-depth investigation into the issue: https://github.com/ReznoRMichael/hollow-knight-completion-check/issues/14#issue-2139849718
+        const bankerSpaMet = playerData[i] === true;
+        const bankerBalance = typeof playerData.bankerBalance === "number" ? playerData.bankerBalance : 0;
+        const bankerTheftCheck = playerData.bankerTheftCheck === true;
+        const bankerShouldBeMet = bankerSpaMet || (!bankerSpaMet && bankerBalance <= 0 && bankerTheftCheck);
+        bankerShouldBeMet ? SetIconGreen(section, i) : SetIconRed(section, i);
+        break;
+      }
 
       default:
         (playerData[i] === true) ? SetIconGreen(section, i): SetIconRed(section, i);
@@ -1152,6 +1165,11 @@ function WorldDataActivated(idText, sceneNameText, worldData) {
 }
 
 /**
+ * Extracts the Geo value from a Geo Rock entry name (e.g. "Geo Rock #1: 15 Geo").
+ * @param {string} text Entry name to parse.
+ * @returns {number} Geo value or 0 when none found.
+ */
+/**
  * Verifies if the data in a specific section is true or false, or checks what values they have.
  * @param {object} section Reference/pointer to the specific section of the whole hk-database
  * @param {object} saveFile Reference/pointer to the whole Hollow Knight save file object (jsonObject)
@@ -1166,17 +1184,11 @@ function CheckAdditionalThings(section, saveFile) {
   // Start main loop
   for (let i in entries) {
 
-    let {
-      amount,
-      countTotal,
-      total,
-      notActivated,
-      activated,
-      discoveredTotal
-    } = 0;
+    let amount = 0;
+    let countTotal = 0;
+    let total = 0;
 
     switch (i) {
-      case "grubsCollected":
       case "grubRewards":
       case "charmsOwned":
       case "dreamOrbs":
@@ -1398,18 +1410,47 @@ function CheckAdditionalThings(section, saveFile) {
 
         break;
 
-      case "itemsDiscovered":
-        discoveredTotal = sceneData.persistentBoolItems.length;
+      case "itemsDiscovered": {
+        const interactableSummary = BuildInteractableSummary(worldData);
 
-        notActivated = CountItems(discoveredTotal, "notActivated");
-        activated = CountItems(discoveredTotal, "active");
+        entries[i].discoveredTotal = interactableSummary.total;
+        entries[i].notActivated = interactableSummary.notActivated;
+        entries[i].activated = interactableSummary.activated;
 
-        entries[i].discoveredTotal = discoveredTotal;
-        entries[i].notActivated = notActivated;
-        entries[i].activated = activated;
+        const interactablesDetailsSection = HK.sections.statisticsInteractables;
+        ClearSectionEntries(interactablesDetailsSection);
+
+        interactablesDetailsSection.description = `Tracked interactables: ${interactableSummary.total}. Activated: ${interactableSummary.activated}. Remaining: ${interactableSummary.notActivated}.`;
+
+        const list = interactableSummary.list;
+        for (let index = 0, ln = list.length; index < ln; index++) {
+          const item = list[index];
+          const isActivated = item.activated === true;
+          const displayName = item.displayName || item.id;
+          const entryName = isActivated ? displayName : `<span class='spoiler-red blurred'>${displayName}</span>`;
+          const iconName = item.semiPersistent === true ? (isActivated ? "semiPersistentActive" : "semiPersistentInactive") : (isActivated ? "green" : "red");
+
+          interactablesDetailsSection.entries[`interactable${index + 1}`] = {
+            name: entryName,
+            spoiler: item.mapName,
+            icon: iconName,
+            wiki: ""
+          };
+        }
+
+        if (!list.length) {
+          interactablesDetailsSection.description = "No interactables data available.";
+          interactablesDetailsSection.entries.placeholder = {
+            name: "No data available yet.",
+            spoiler: "Analyze a save to populate this list.",
+            icon: "revealed",
+            wiki: ""
+          };
+        }
 
         SetIcon(section, i, "revealed");
         break;
+      }
 
       case "shopkeeperKey":
         (playerData.hasSlykey === true || playerData.gaveSlykey === true) ? SetIconGreen(section, i): SetIconRed(section, i);
@@ -1840,128 +1881,157 @@ function CheckAdditionalThings(section, saveFile) {
   }
 
   /**
-   * Counts the total amount of Geo Rocks Unbroken or Broken. Logs to console all the Unbroken IDs and Map locations.
-   * @param {number} arrayLength How many items the Geo Rocks array is currently storing (for iteration)
-   * @param {string} mode Choose which Geo Rocks to count (broken or unbroken)
+   * Builds a summary of interactables (world items) including the missing ones.
+   * @param {Array} items Array of world interactables (sceneData.persistentBoolItems)
+   * @returns {object} Summary object with counts and missing list.
    */
-  /* function CountGeoRocks(arrayLength, mode = "unbroken") {
+  function BuildInteractableSummary(items = []) {
 
-    let countTotal = 0;
-    let geoRocksLog = [];
+    let summary = {
+      total: 0,
+      notActivated: 0,
+      activated: 0,
+      missing: [],
+      list: []
+    };
 
-    if (mode === "unbroken") {
-      for (let i = 0; i < arrayLength; i++) {
-        if (sceneData.geoRocks[i].hitsLeft > 0) {
-          countTotal++;
-          geoRocksLog.push(`#${countTotal} 🏔️ ${sceneData.geoRocks[i].id} 🗺️ ${TranslateMapName(sceneData.geoRocks[i].sceneName)} ⌨️ ${sceneData.geoRocks[i].sceneName}`);
-        }
+    const unique = new Map();
+
+    const ensureRecord = (id, mapName) => {
+      const key = `${id}|${mapName}`;
+
+      if (!unique.has(key)) {
+        unique.set(key, {
+          id,
+          displayName: FormatInteractableName(id) || id,
+          mapName,
+          hasActive: false,
+          hasInactive: false,
+          observed: false,
+          lastState: false,
+          semiPersistent: false
+        });
       }
 
-      if (!countTotal) {
-        console.log("%cAll Geo Rocks Broken!", "color: #16c60c; font-weight: 700;");
+      return unique.get(key);
+    };
+
+    for (let i = 0, length = INTERACTABLES.length; i < length; i++) {
+      const base = INTERACTABLES[i];
+      const mapName = TranslateMapName(base.sceneName);
+      ensureRecord(base.id, mapName);
+    }
+
+    for (let i = 0, length = items.length; i < length; i++) {
+      const item = items[i];
+      const mapName = TranslateMapName(item.sceneName);
+      const record = ensureRecord(item.id, mapName);
+
+      record.observed = true;
+      record.semiPersistent = record.semiPersistent || item.semiPersistent === true;
+
+      if (item.activated === true) {
+        record.hasActive = true;
+        record.lastState = true;
       } else {
-        console.groupCollapsed(`%cUnbroken Geo Rocks (${countTotal}):`, "color: #16c60c; font-weight: 700;");
-
-        for (let i = 0, length = geoRocksLog.length; i < length; i++) {
-          console.log(geoRocksLog[i]);
-        }
-
-        console.groupEnd();
-      }
-    } else {
-      for (let i = 0; i < arrayLength; i++) {
-        if (sceneData.geoRocks[i].hitsLeft === 0) countTotal++;
+        record.hasInactive = true;
+        record.lastState = false;
       }
     }
 
-    return countTotal;
-  } */
+    unique.forEach((record) => {
+      let isActivated = false;
 
-  /**
-   * Counts the amount of in-game Interactables Activated or Not Activated. Logs to console all the Not Activated IDs and Map locations.
-   * @param {number} arrayLength How many items the Interactables array is currently storing (for iteration)
-   * @param {string} mode Choose which Interactables to count (notActivated or activated)
-   */
-  function CountItems(arrayLength, mode = "notActivated") {
-
-    let countTotal = 0;
-    let itemsLog = [];
-
-    if (mode === "notActivated") {
-
-      /* 
-      let list = new ItemListBox(worldData);
-      
-      */
-
-      for (let i = 0; i < arrayLength; i++) {
-        if (worldData[i].activated === false &&
-          worldData[i].semiPersistent === false) {
-          countTotal++;
-          itemsLog.push(`#${countTotal} ${worldData[i].id} 🗺️ ${TranslateMapName(worldData[i].sceneName)} ⌨️ ${worldData[i].sceneName}`);
+      if (record.observed) {
+        if (record.semiPersistent) {
+          isActivated = record.lastState === true;
+        } else {
+          isActivated = record.hasActive && !record.hasInactive;
         }
       }
 
-      if (!countTotal) {
-        console.log("%cAll Interactables Activated!", "color: #16c60c; font-weight: 700;");
+      if (isActivated) {
+        summary.activated++;
       } else {
-        console.groupCollapsed(`%cInteractables Not Activated (${countTotal}):`, "color: #16c60c; font-weight: 700;");
-
-        for (let i = 0, length = itemsLog.length; i < length; i++) {
-          console.log(itemsLog[i]);
-        }
-
-        console.groupEnd();
+        summary.notActivated++;
+        summary.missing.push({
+          id: record.id,
+          displayName: record.displayName,
+          mapName: record.mapName
+        });
       }
-    } else {
-      for (let i = 0; i < arrayLength; i++) {
-        if (worldData[i].activated === true) countTotal++;
-      }
-    }
 
-    return countTotal;
+      summary.list.push({
+        id: record.id,
+        displayName: record.displayName,
+        mapName: record.mapName,
+        activated: isActivated,
+        semiPersistent: record.semiPersistent
+      });
+    });
+
+    summary.list.sort((a, b) => {
+      const idCmp = a.id.localeCompare(b.id);
+      if (idCmp !== 0) return idCmp;
+      return a.mapName.localeCompare(b.mapName);
+    });
+
+    summary.total = summary.list.length;
+
+    return summary;
   }
 
   /**
-   * Compares and logs all unrescued Grubs in a list: IDs and map locations
+   * Builds a summary of rescued and missing grubs for the given section.
+   * @param {object} currentSection Section data that contains the reference grub list.
+   * @param {Array} items Array of world interactables (sceneData.persistentBoolItems)
+   * @returns {object} Summary object with missing and collected grubs.
    */
-  /* function LogMissingGrubs() {
+  function BuildGrubSummary(currentSection = {}, items = []) {
 
-    let rescuedGrubsSceneList = [];
+    const rescuedScenes = new Set();
 
-    for (let i = 0, length = worldData.length; i < length; i++) {
-      if (worldData[i].id.includes("Grub Bottle")) {
-        if (worldData[i].activated === true) {
-          // There are 3 duplicates of the same map scene name from older game save files. Prevents adding duplicates
-          //  if (worldData[i].sceneName === "Ruins2_11" && worldData[i].id === "Grub Bottle (1)") {
-          //     continue;
-          // } else if (worldData[i].sceneName === "Ruins2_11" && worldData[i].id === "Grub Bottle (2)") {
-          //     continue;
-          // } else { 
-          rescuedGrubsSceneList.push(worldData[i].sceneName);
-          // }
-        }
+    for (let i = 0, length = items.length; i < length; i++) {
+      if (items[i].id.includes("Grub Bottle") && items[i].activated === true) {
+        rescuedScenes.add(items[i].sceneName);
       }
     }
 
-    // Filtering the reference database Grub list to include only the missing values
-    let missingGrubsList = section.grubsList.filter(x => !rescuedGrubsSceneList.includes(x));
-    let length = missingGrubsList.length;
+    const missing = [];
+    const collected = [];
+    const referenceList = Array.isArray(currentSection.grubsList) ? currentSection.grubsList : [];
 
-    if (!length) {
-      console.log("%cAll Grubs Rescued!", "color: #16c60c; font-weight: 700;");
-    } else {
-      console.groupCollapsed(`%cUnrescued Grubs (${length}):`, "color: #16c60c; font-weight: 700;");
+    for (let i = 0, length = referenceList.length; i < length; i++) {
+      const sceneName = referenceList[i];
+      const entry = {
+        number: i + 1,
+        sceneName,
+        mapName: TranslateMapName(sceneName)
+      };
 
-      for (let i = 0; i < length; i++) {
-        console.log(`#${section.grubsList.indexOf(missingGrubsList[i]) + 1} 🗺️ ${TranslateMapName(missingGrubsList[i])} ⌨️ ${missingGrubsList[i]}`);
+      if (rescuedScenes.has(sceneName)) {
+        collected.push(entry);
+      } else {
+        missing.push(entry);
       }
-
-      console.groupEnd();
     }
 
-    return false;
-  } */
+    return {
+      missing,
+      collected,
+      total: referenceList.length
+    };
+  }
+
+  function ClearSectionEntries(section = {}) {
+    if (!section || !section.entries) return;
+
+    for (let key in section.entries) {
+      if (section.entries.hasOwnProperty(key)) {
+        delete section.entries[key];
+      }
+    }
+  }
 } // end function CheckAdditionalThings()
 
 /**
@@ -1977,6 +2047,17 @@ function CheckMrMushroomState(section, entry, mrMushroomState = 0) {
   } else {
     SetIconRed(section, `mrMushroomState${entry.state - 1}`);
   }
+}
+
+function FormatInteractableName(name = "") {
+  if (!name) return "";
+
+  return name
+    .replace(/_/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 /**
@@ -2329,7 +2410,7 @@ function CheckHintsTrue(section, dataObject, playerData, worldData) {
         section.current = i;
         break;
       }
-    /* 
+    /*
     After killing Hollow Knight:
     - gather 1800 Essence (Essence sources)
     - get Awoken Dream Nail from Seer
@@ -2407,11 +2488,13 @@ function InitializeHTMLPopulation(db) {
   if (StorageAvailable('localStorage')) {
     if (localStorage.getItem("hkCheckboxHints") === "checked") document.getElementById("checkbox-hints").checked = true;
     if (localStorage.getItem("hkCheckboxSpoilers") === "checked") document.getElementById("checkbox-spoilers").checked = true;
+    if (localStorage.getItem("hkCheckboxHideCompleted") === "checked") document.getElementById("checkbox-hide-completed").checked = true;
   }
 
   // Prevents wrong checkbox behaviour (must run after everything is finished)
   CheckboxHintsToggle();
   CheckboxSpoilersToggle();
+  CheckboxHideCompletedToggle();
 }
 
 /**
@@ -2436,6 +2519,41 @@ function ResetCompletion(db) {
 
   for (let section in sections) {
     entries = sections[section].entries;
+
+    if (section === "statisticsInteractables") {
+      sections[section].description = `Tracked interactables: ${INTERACTABLES.length}. Activated: 0. Remaining: ${INTERACTABLES.length}.`;
+      sections[section].entries = {};
+      INTERACTABLES.forEach((item, index) => {
+        const mapName = TranslateMapName(item.sceneName);
+        const displayName = FormatInteractableName(item.id);
+        const blurredName = `<span class='spoiler-red blurred'>${displayName}</span>`;
+        sections[section].entries[`interactable${index + 1}`] = {
+          name: blurredName,
+          spoiler: mapName,
+          icon: "red",
+          wiki: ""
+        };
+      });
+      continue;
+    }
+
+    if (section === "essentialsGrubsDetails") {
+      const grubsMaster = db.sections.grubs.entries;
+      let count = 0;
+      sections[section].entries = {};
+      for (let key in grubsMaster) {
+        if (!grubsMaster.hasOwnProperty(key)) continue;
+        const master = grubsMaster[key];
+        sections[section].entries[`grubList${++count}`] = {
+          name: master.name,
+          spoiler: master.spoiler,
+          icon: "red",
+          wiki: master.wiki
+        };
+      }
+      sections[section].description = `Total grubs: ${count}. Rescued: 0. Remaining: ${count}.`;
+      continue;
+    }
 
     if (sections[section].hasOwnProperty("percent")) sections[section].percent = 0;
 
@@ -2646,6 +2764,7 @@ class DataChecker {
           }
       }
     }
+
   } // end checkGeoRocks
 
 } // end class DataChecker

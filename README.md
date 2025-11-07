@@ -11,14 +11,8 @@
   <img src="https://img.shields.io/static/v1?label=Instagram&message=reznor.technology&labelColor=lightgrey&color=E4405F&style=flat&logo=Instagram"></a>
 </p>
 
-
-# Notice
-
-
-# I am deeply saddened to inform you that the author of this repository, ReznoR, passed away in 2022. Development of this project will no longer continue. I will not change anything in this repository. Any donations will be used to maintain his resting place.
-Thank you for your understanding.
-
-**His brother – [Gerrrciu](https://github.com/gerrrciu)**
+> [!IMPORTANT]
+> Original links and socials in this forked repository remain untouched, with the sole exception of GitHub links which point to this fork. For more details, please see the notice under [Support Tool](#support-tool-paypal).
 
 # Save Completion Analyzer for Hollow Knight 
 
@@ -28,9 +22,16 @@ Thank you for your understanding.
 
 ![donate](https://img.shields.io/static/v1?label=Donate&message=PayPal&color=blue&labelColor=lightgrey&style=for-the-badge&logo=paypal&link=https://www.paypal.com/paypalme/ReznoRMichael)
 
-Every single penny counts: [Donate any amount](https://www.paypal.me/ReznoRMichael). By donating you directly contribute to the purpose of improving the tool for yourself and everyone else.
+> [!IMPORTANT]  
+> **Notice from the original repository**  
+> I am deeply saddened to inform you that the author of this repository, ReznoR, passed away in 2022. Development of this project will no longer continue. I will not change anything in this repository. Any donations will be used to maintain his resting place.  
+> 
+> Thank you for your understanding.
+>   
+> His brother – [Gerrrciu](https://github.com/gerrrciu)
 
-> **PayPal supporters are immortalized on the Tool's Web page** with a Lvl indicating the amount of support for the Tool. You can get your name/nick immortalized too! Donate at least $1 for the Tool development 🙂 You can include the name or nick in the PayPal donation message (optional) or "Anonymous" if you wish to be featured anonymously. If you don't want to be featured on the page, please write it in the message too.
+Given I cannot see those donations, I cannot include supporters on the Tool's web page as the original author did. The list will remain untouched from here on out.
+
 
 ## General info
 
@@ -57,7 +58,7 @@ The tool doesn't have the power to modify *any* of your files, but *always* do b
   
    * Press **CTRL+C** (or Right-click -> Copy) to copy the whole contents inside the text box.
 
-   * Go to the [Tool's webpage](https://reznormichael.github.io/hollow-knight-completion-check/) and press **CTRL+V** (or Right-click -> Paste) to paste the copied text inside the text box.
+   * Go to the [Tool's webpage](https://bvengo.github.io/hollow-knight-completion-check/) and press **CTRL+V** (or Right-click -> Paste) to paste the copied text inside the text box.
 
    * Click **"Analyze Text"**. If the copy-pasted data was correct, you will see your Completion %, Play Time, and a whole list of things you have done (✅) or not yet done (❌).
 
@@ -90,21 +91,40 @@ You can use this if you want to check your save progress without access to your 
 
 ## Use offline or online (web) - your choice
 
-My tool uses client-side Javascript, so it runs on anything that has a modern browser. Even without internet access. You can use it locally on your PC, on mobile or on any operating system you desire (Windows, MacOS, Linux) without internet connection — everything is done on your device and your CPU. To do that, you can either download the source code [directly from GitHub](https://github.com/ReznoRMichael/hollow-knight-completion-check/archive/master.zip), go to `/docs` folder and launch `index.html`. Only contents inside the `/docs` folder are required for the program to run. Or go to the tool's webpage and choose *Page -> Save As...* like you would save a normal program.  
+My tool uses client-side Javascript, so it runs on anything that has a modern browser. Even without internet access. You can use it locally on your PC, on mobile or on any operating system you desire (Windows, MacOS, Linux) without internet connection — everything is done on your device and your CPU. To do that, you can either download the source code [directly from GitHub](https://github.com/BVengo/hollow-knight-completion-check/archive/master.zip), go to `/docs` folder and launch `index.html`. Only contents inside the `/docs` folder are required for the program to run. Or go to the tool's webpage and choose *Page -> Save As...* like you would save a normal program.  
 On Android running the tool locally requires manually typing the address `file:///storage/emulated/0` in your browser and from there pointing to the `index.html` file in the folder you saved the tool into. Then you can save it in your bookmarks for easy subsequent usage.
 
 ## Support and feedback
 
-All feedback/problems/wrong data are appreciated. Feel free to write them in the [Steam Discussion](https://steamcommunity.com/app/367520/discussions/0/2915472677711090083/) thread for the Tool or under the [Steam Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2209910193).
+All feedback/problems/wrong data are appreciated.
 
-If you like the tool and wish it developed further with more functions and easier usage, consider supporting on [PayPal](https://www.paypal.me/ReznoRMichael). PayPal supporters with at least $1 are **immortalized on the Tool's Web page.**
+Please create a [GitHub Issue](https://github.com/bvengo/hollow-knight-completion-check/issues), as I won't be tracking the original [Steam Discussion](https://steamcommunity.com/app/367520/discussions/0/2915472677711090083/) thread for the Tool or the [Steam Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2209910193).
 
-![donate](https://img.shields.io/static/v1?label=Donate&message=PayPal&color=blue&labelColor=lightgrey&style=for-the-badge&logo=paypal&link=https://www.paypal.com/paypalme/ReznoRMichael)
+If there are bugs related directly to the save file, I would love it if you could give me as much information as possible to work off to minimise dev time (noting that I'm not actively developing this project, but simply trying to keep it up to date). A great example of this is [issue 14](https://github.com/ReznoRMichael/hollow-knight-completion-check/issues/14) by samjwill in the original repo.
 
 ## Version History
 
-* v2.2.0 Upcoming:  
+* v2.2.0 2025-11-07:
 
+  — **General**  
+  ✅ Updated GitHub links to BVengo's repository  
+  ✅ Made some changes to the README and site to clarify where donations go  
+  ✅ Added a checkbox to hide all completed tasks  
+  ✅ Updated wiki link to official wiki  
+  ✅ Save file path is now based off the user's system  
+
+  — **Interactables**  
+  ✅ Added all interactables into the statistics page
+
+  — **Bug Fixes:**  
+  ✅ Added custom check for talking to Millibelle at the spa. (Thanks to samjwill)
+
+  — **Security Fixes:**  
+  ✅ Updated packages to address many security vulnerabilities
+
+
+  > All changes below this point were by the original author.
+  
   — **General Changes:**  
   ✅ Moved Pale Lurker's Retreat to Game Completion % Essentials – World Interactions.  
   ✅ Added backwards save compatibility detection to entries: Path of Pain Entrance, Pale Lurker's Retreat.  
@@ -536,4 +556,5 @@ If you like the tool and wish it developed further with more functions and easie
 
 ## Contact
 
-Written and created by [ReznoRMichael](https://github.com/ReznoRMichael)
+Written and created by [ReznoRMichael](https://github.com/ReznoRMichael). \
+Maintained by [BVengo](https://github.com/BVengo).

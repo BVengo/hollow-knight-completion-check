@@ -113,11 +113,11 @@ function TranslateMapName(mapCode, dictionary = MAP) {
 
 /**
  * Generates database entries text. Provides an easy filling solution.
- * @param {array} objectArray 
- * @param {string} searchText 
- * @param {string} entryName 
- * @param {string} entryDB 
- * @param {string} wiki 
+ * @param {array} objectArray
+ * @param {string} searchText
+ * @param {string} entryName
+ * @param {string} entryDB
+ * @param {string} wiki
  */
 function GenerateDatabaseEntries(objectArray, searchText = "", entryName = "", entryDB = "", wiki = "") {
 
