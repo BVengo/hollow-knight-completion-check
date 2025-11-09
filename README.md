@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Original links and socials in this forked repository remain untouched, with the sole exception of GitHub links which point to this fork. For more details, please see the notice under [Support Tool](#support-tool-paypal).
+
 <p align="center">
   <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2209910193" target="_blank">
   <img src="https://img.shields.io/static/v1?label=Steam&message=Guide&color=grey&style=for-the-badge&logo=Steam"></a>
@@ -10,9 +13,6 @@
   <a href="https://www.instagram.com/reznor.technology/" target="_blank">
   <img src="https://img.shields.io/static/v1?label=Instagram&message=reznor.technology&labelColor=lightgrey&color=E4405F&style=flat&logo=Instagram"></a>
 </p>
-
-> [!IMPORTANT]
-> Original links and socials in this forked repository remain untouched, with the sole exception of GitHub links which point to this fork. For more details, please see the notice under [Support Tool](#support-tool-paypal).
 
 # Save Completion Analyzer for Hollow Knight 
 
@@ -29,9 +29,6 @@
 > Thank you for your understanding.
 >   
 > His brother – [Gerrrciu](https://github.com/gerrrciu)
-
-Given I cannot see those donations, I cannot include supporters on the Tool's web page as the original author did. The list will remain untouched from here on out.
-
 
 ## General info
 
