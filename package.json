@@ -4,7 +4,7 @@
   "description": "Hollow Knight Save Game Completion Analyzer Web Tool",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/*.test.cjs",
     "start": "webpack --config webpack.dev.js --mode development",
     "stage": "webpack --config webpack.stage.js --mode production",
     "prod": "webpack --config webpack.prod.js --mode production"
@@ -28,7 +28,9 @@
   ],
   "author": "Michael ReznoR",
   "maintainers": [
-    { "name": "BVengo" }
+    {
+      "name": "BVengo"
+    }
   ],
   "license": "GPL-3.0",
   "bugs": {
@@ -44,7 +46,7 @@
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.4.0",
-    "css-minimizer-webpack-plugin": "^3.1.1",
+    "css-minimizer-webpack-plugin": "^8.0.0",
     "eslint": "^8.1.0",
     "html-webpack-partials-plugin": "^0.8.0",
     "html-webpack-plugin": "^5.4.0",
