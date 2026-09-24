@@ -370,14 +370,12 @@ function GenerateInnerHTML(db) {
           switch (entry) {
             case "gameCompletion":
               obj.textSuffix = `${obj.textSuffix} %`;
-              obj.spoilerAfter = `</b> ${entries[entry].spoilerAfter}`;
-              obj.span[1] = "";
+              obj.spoilerAfter = ` ${entries[entry].spoilerAfter}`;
 
               break;
 
             case "gameCompletionExtended":
-              obj.spoilerAfter = `</b> ${entries[entry].spoilerAfter}`;
-              obj.span[1] = "";
+              obj.spoilerAfter = ` ${entries[entry].spoilerAfter}`;
 
               break;
 
@@ -471,6 +469,7 @@ function GenerateInnerHTML(db) {
         /* #################### Hints (hints) #################### */
 
       case "hints":
+        obj.spoilerAfter = "";
         obj.b = ["", ""];
         obj.span = ["<span class='hint'>", "</span>"];
         obj.icon = "";
@@ -499,6 +498,7 @@ function GenerateInnerHTML(db) {
         for (let entry in entries) {
 
           /* obj.p = "<span class='p-left-small'></span>"; */
+          obj.spoilerAfter = "";
           obj.p = "";
           obj.span = ["<span class='spoiler-span blurred'>", "</span>"];
           obj.spoiler = ["<span class='spoiler-text'>", "</span>"];
@@ -966,6 +966,7 @@ function SingleEntryFill(obj) {
     obj.textSuffix,
     obj.spoiler[1],
     obj.span[1],
+    obj.spoilerAfter,
     "</div>\n"
   ].join("");
 

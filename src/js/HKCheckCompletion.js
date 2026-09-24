@@ -1189,6 +1189,7 @@ function CheckAdditionalThings(section, saveFile) {
     let total = 0;
 
     switch (i) {
+      case "grubsCollected":
       case "grubRewards":
       case "charmsOwned":
       case "dreamOrbs":
